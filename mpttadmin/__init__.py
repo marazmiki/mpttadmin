@@ -1,17 +1,16 @@
 # coding: utf-8
-# vim: ai ts=4 sts=4 et sw=4
-#from django.utils.translation import ugettext_lazy as _
+
 from django.contrib import admin
-from django.conf.urls.defaults import *
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import  get_object_or_404
-import os
 from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils import simplejson
 from django import template
 from django.contrib.auth.decorators import permission_required
 from django.views.decorators.csrf import csrf_exempt
+import os
+
 
 class MpttAdmin(admin.ModelAdmin):
 
@@ -87,14 +86,14 @@ class MpttAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(MpttAdmin, self).get_urls()
 
-        my_urls = patterns('',
+        my_urls = [
             (r'^tree/$', self.get_tree),
             (r'^move_node/$', self.move_node),
             (r'^rename/$', self.rename),
             (r'^remove/$', self.remove),
             (r'^media/(?P<path>.*)$', 'django.views.static.serve',
                  {'document_root': os.path.join(os.path.dirname(__file__),'media'), 'show_indexes': True}),
-        )
+        ]
         return my_urls + urls
 
     @csrf_exempt
